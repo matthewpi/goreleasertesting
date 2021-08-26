@@ -1,0 +1,43 @@
+project_name: goreleasertesting
+before:
+  hooks:
+    - go mod download
+gomod:
+  proxy: true
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+    goarch:
+      - amd64
+      - arm64
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+nfpms:
+  - package_name: goreleasertesting
+    vendor: Example
+    homepage: https://example.com
+    maintainer: Example <person@example.com>
+    description: Test
+    license: MIT
+    formats:
+      - deb
+      - rpm
+    bindir: /usr/bin
+    overrides:
+      deb:
+        file_name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Arch }}"
+      rpm:
+        file_name_template: "{{ .ProjectName }}-{{ .Version }}.{{ .Arch }}"
+        replacements:
+          amd64: x86_64
+          arm64: aarch64
+release:
+  github:
+    owner: matthewpi
+    name: goreleasertesting
+  draft: true
+  prerelease: auto

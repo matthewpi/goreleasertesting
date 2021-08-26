@@ -1,0 +1,3 @@
+# GoReleaser Testing
+
+Soon&trade;
